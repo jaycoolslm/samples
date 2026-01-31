@@ -20,15 +20,20 @@ Reference implementation of a UCP Merchant Server with Hedera HBAR payments.
 
 ## Quick Start
 
-**New to UCP?** Use the one-command setup from the parent directory:
-
 ```bash
-cd rest/python
-python setup.py
-```
+# First, clone this repo
+git clone https://github.com/hedera-dev/tutorial-ucp-hedera
+cd tutorial-ucp-hedera
 
-This handles everything: dependencies, database, and Hedera credentials.
-See [../README.md](../README.md) for the complete quick start guide.
+# Second, clone and set up the UCP SDK (sibling directory)
+mkdir -p sdk
+git clone https://github.com/Universal-Commerce-Protocol/python-sdk.git sdk/python
+cd sdk/python && uv sync && cd -
+
+# Then run setup
+cd rest
+./setup.sh
+```
 
 ## Manual Setup
 
@@ -217,7 +222,7 @@ Response:
 ```
 
 Full response
-[example](https://github.com/Universal-Commerce-Protocol/samples/blob/main/rest/python/client/flower_shop/sample_output/happy_path_dialog.md#response).
+[example](https://github.com/Universal-Commerce-Protocol/samples/blob/main/rest/client/flower_shop/sample_output/happy_path_dialog.md#response).
 
 ## Capabilities & Extensions
 
@@ -325,7 +330,7 @@ curl -X POST http://localhost:8182/checkout-sessions \
 ```
 
 Full request
-[example](https://github.com/Universal-Commerce-Protocol/samples/blob/main/rest/python/client/flower_shop/sample_output/happy_path_dialog.md#request-1).
+[example](https://github.com/Universal-Commerce-Protocol/samples/blob/main/rest/client/flower_shop/sample_output/happy_path_dialog.md#request-1).
 
 ### Response:
 
@@ -417,7 +422,7 @@ Full request
 ```
 
 Full response
-[example](https://github.com/Universal-Commerce-Protocol/samples/blob/main/rest/python/client/flower_shop/sample_output/happy_path_dialog.md#response-1).
+[example](https://github.com/Universal-Commerce-Protocol/samples/blob/main/rest/client/flower_shop/sample_output/happy_path_dialog.md#response-1).
 
 ### Example of Discount Extension
 

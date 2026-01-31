@@ -14,28 +14,34 @@
    limitations under the License.
 -->
 
-# UCP Python Samples
+# UCP + Hedera Payment Demo
 
 A complete demo of the Universal Commerce Protocol (UCP) with Hedera HBAR payments.
 
 ## Quick Start
 
 ```bash
-# 1. Clone repositories
+# 1. Clone the SDK (required dependency)
+mkdir sdk
 git clone https://github.com/Universal-Commerce-Protocol/python-sdk.git sdk/python
-git clone https://github.com/Universal-Commerce-Protocol/samples.git
-cd samples/rest/python
+pushd sdk/python
+uv sync
+popd
 
-# 2. Run setup (installs deps, creates DB, configures Hedera)
-python setup.py
+# 2. Clone this repo
+git clone https://github.com/hedera-dev/tutorial-ucp-hedera.git
+cd tutorial-ucp-hedera/rest
 
-# 3. Start server (Terminal 1)
+# 3. Run setup (installs deps, creates DB, configures Hedera)
+./setup.sh
+
+# 4. Start server (Terminal 1)
 cd server
 uv run server.py --products_db_path=/tmp/ucp_test/products.db \
                  --transactions_db_path=/tmp/ucp_test/transactions.db \
                  --port=8182
 
-# 4. Run client (Terminal 2)
+# 5. Run client (Terminal 2)
 cd client/flower_shop
 uv run simple_happy_path_client.py --server_url=http://localhost:8182
 ```
@@ -51,16 +57,19 @@ uv run simple_happy_path_client.py --server_url=http://localhost:8182
 ## Project Structure
 
 ```
-rest/python/
-├── setup.py              # One-command setup script
-├── README.md             # This file
-├── server/               # UCP Merchant Server (FastAPI)
-│   ├── server.py         # Main server entry point
-│   └── services/         # Business logic
-├── client/
-│   └── flower_shop/      # Sample client
-│       └── simple_happy_path_client.py
-└── test_data/            # Sample flower shop data
+sdk/
+└── python/               # UCP Python SDK (clone separately)
+
+tutorial-ucp-hedera/
+└── rest/
+    ├── setup.sh          # One-command setup script
+    ├── README.md         # This file
+    ├── server/           # UCP Merchant Server (FastAPI)
+    │   ├── server.py     # Main entry point
+    │   └── services/     # Business logic
+    ├── client/
+    │   └── flower_shop/  # Sample client
+    └── test_data/        # Sample flower shop data
 ```
 
 ## What the Demo Does
@@ -93,7 +102,7 @@ Hedera Explorer URL: https://hashscan.io/testnet/transaction/...
 
 ### Environment Variables
 
-Both server and client use `.env` files (created by `setup.py`):
+Both server and client use `.env` files (created by `setup.sh`):
 
 | Variable | Description | Example |
 |----------|-------------|---------|
@@ -105,29 +114,16 @@ Both server and client use `.env` files (created by `setup.py`):
 
 For testing, you can use the same account for both merchant and customer.
 
-### Manual Setup (Alternative)
-
-If you prefer not to use `setup.py`:
-
-```bash
-# Install server dependencies
-cd server && uv sync
-
-# Install client dependencies
-cd ../client/flower_shop && uv sync
-
-# Create database
-cd ../../server
-mkdir -p /tmp/ucp_test
-uv run import_csv.py \
-    --products_db_path=/tmp/ucp_test/products.db \
-    --transactions_db_path=/tmp/ucp_test/transactions.db \
-    --data_dir=../test_data/flower_shop
-
-# Create .env files manually (see Configuration section above)
-```
-
 ## Troubleshooting
+
+### "Distribution not found" for ucp-sdk
+
+Make sure you cloned and set up the SDK first:
+```bash
+mkdir sdk
+git clone https://github.com/Universal-Commerce-Protocol/python-sdk.git sdk/python
+cd sdk/python && uv sync && cd -
+```
 
 ### "Hedera credentials required"
 
